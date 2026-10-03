@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Simple Login Form</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #1b1b1b;
+    color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  .card {
+    background: #262626;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 300px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  }
+  h1 {
+    margin-top: 0;
+    font-size: 1.4rem;
+    text-align: center;
+  }
+  label {
+    display: block;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+  }
+  input {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.25rem;
+    box-sizing: border-box;
+    border: 1px solid #444;
+    border-radius: 4px;
+    background: #1b1b1b;
+    color: #f0f0f0;
+  }
+  button {
+    width: 100%;
+    margin-top: 1.5rem;
+    padding: 0.6rem;
+    background: #ff6f00;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  button:hover {
+    background: #e56300;
+  }
+  #error {
+    color: #ff5252;
+    font-size: 0.85rem;
+    min-height: 1.2em;
+    margin-top: 0.75rem;
+  }
+  #welcome {
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <h1>Juice Shop Style Login</h1>
+  <form id="loginForm" novalidate>
+    <label for="email">Email</label>
+    <input type="text" id="email" placeholder="you@example.com">
+
+    <label for="password">Password</label>
+    <input type="password" id="password" placeholder="At least 8 characters">
+
+    <button type="submit">Log In</button>
+  </form>
+  <p id="error"></p>
+  <div id="welcome"></div>
+</div>
+
+<script>
+  // ---- Client-side validation ----
+  // This mirrors the kind of checks Juice Shop's real login form performs
+  // before a request is ever sent to the server. Client-side checks improve
+  // user experience (fast feedback) but must NEVER be trusted as the only
+  // line of defense, since they can be bypassed by disabling JS or calling
+  // the API directly. Server-side validation (see README) is what actually
+  // protects the system.
+
+  document.getElementById('loginForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const errorEl = document.getElementById('error');
+    const welcomeEl = document.getElementById('welcome');
+
+    errorEl.textContent = '';
+    welcomeEl.innerHTML = '';
+
+    if (!email || !password) {
+      errorEl.textContent = 'Email and password are required.';
+      return;
+    }
+
+    if (!email.includes('@')) {
+      errorEl.textContent = 'Please enter a valid email address.';
+      return;
+    }
+
+    if (password.length < 8) {
+      errorEl.textContent = 'Password must be at least 8 characters.';
+      return;
+    }
+
+    // NOTE (intentional for this assignment's Part 3 exercise):
+    // This line renders the email directly into the page using innerHTML.
+    // If the input contains HTML/JS instead of plain text, the browser
+    // will render or execute it — this is a classic reflected XSS pattern.
+    // A fixed version would use .textContent instead of .innerHTML here
+    // (see README "Fix" section).
+    welcomeEl.innerHTML = 'Welcome, ' + email + '!';
+  });
+</script>
+
+</body>
+</html>
